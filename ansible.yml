@@ -1,0 +1,21 @@
+- name: Dockerhost build and run
+  hosts: dockerhost
+  become: true
+  tasks:
+    - name: Transfer Dockerfile
+      copy:
+        src: "/var/lib/jenkins/workspace/Build code/Dockerfile"
+        dest: "/home/ubuntu/deploy/Dockerfile"
+    - name: Transfer .war
+      copy:
+        src: "/var/lib/jenkins/workspace/Build code/target/webapp.war"
+        dest: "/home/ubuntu/deploy/webapp.war"
+    - name: Build image docker
+      shell: |
+        cd /home/ubuntu/deploy
+        docker build -t webapp .
+    - name: Run docker
+      shell: |
+        docker stop webapp || true
+        docker rm webapp || true
+        docker run -d --name webapp -p 8081:8080 webapp:latest
