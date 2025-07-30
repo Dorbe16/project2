@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: webapp-container
-        image: dorbe16/webapp:latest
+        image: alexdbrrr/webapp:latest
         ports:
         - containerPort: 8080
